@@ -21,27 +21,31 @@ app.get('/',(req,res)=>{
         clientes.push(req.body)
         res.status(200).send("Cliente cadastrado com suceso!")
 
+  })
+  // funçaõ que realiza a buscar por id
+  function buscarCliente(id){
+    return clientes.findIndex(cliente => cliente.id == id)
 
-  
-}) 
+  }
 
-const funcionarios = [
-    {id: 1,nome: "Raudney",cpf: "096.104.2204-43"},
-    {id: 2,nome: "Paulo",cpf: "096.104.2204-42"}
-]
-   //consultar todos  funcionarios
-    app.get('/funcionarios', (req,res) =>{
-        res.status(200).json(funcionarios)
-           
+  //consulta cliente por id
+  app.get('/clientes/:id',(req,res) =>{
+    let index = buscarCliente(req.params.id)
+    res.json(clientes[index])
+  })
+  //atualizar cliente por id
+  app.put('/clientes/:id',(req,res) => {
+    let index = buscarCliente(req.params.id)
+    clientes[index] = req.body
+    res.json(clientes)
+
+  })
+//Excluir cliente por id
+app.delete('/clientes/:id',(req,res) =>{
+    let index = buscarCliente(req.params.id)
+    clientes.splice(index,1)
+    res.send("Cliente excluido com sucessso!")
 })
-// cadastrar novo funcionario
-    app.post('/funcionarios',(req,res)=>{
-        funcionarios.push(req.body)
-        res.status(200).send("Funcionarios cadastrado com sucesso!")
-
-    })
-
-    
 
 export default app
 
